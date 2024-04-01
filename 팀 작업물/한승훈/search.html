@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function enterkey() {
+        if (window.event.keyCode == 13) {
+ 
+             // 엔터키가 눌렸을 때 실행하는 반응
+             $("#form").submit();
+        }
+}
+    </script>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <h1>겜사모.gg</h1>
+            <form action="result.html" method="GET">
+                <input onkeyup="enterkey();" type="text" name="name" placeholder="챔피언의 이름을 입력하세요">
+                <button type="submit">검색</button>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
