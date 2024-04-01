@@ -1,50 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>챔피언 검색 결과</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <div class="container">
-            <h1>챔피언 검색 결과</h1>
-            <div id="result"></div>
-        </div>
-    
-        <script>
-            async function displayChampionInfo() {
-                var params = new URLSearchParams(window.location.search);
-                var championName = params.get('name');
-                var championData = await getChampionData();
-                
-                // 챔피언 정보에서 입력한 이름과 일치하는 챔피언 찾기
-                var championInfo = championData.data[championName];
-    
-                var resultDiv = document.getElementById('result');
-                if (championInfo) {
-                    // 챔피언 정보 표시
-                    resultDiv.innerHTML = `
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>챔피언 검색 결과</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>챔피언 검색 결과</h1>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function displayChampionInfo() {
+            var params = new URLSearchParams(window.location.search);
+            var championName = params.get('name');
+            var championData = await getChampionData();
+
+            // 챔피언 정보에서 입력한 이름과 일치하는 챔피언 찾기
+            var championInfo = championData.data[championName];
+
+            var resultDiv = document.getElementById('result');
+            if (championInfo) {
+                // 챔피언 정보 표시
+                resultDiv.innerHTML = `
                         <h2>${championInfo.name}</h2>
                         <p>역할군: ${championInfo.tags.join(', ')}</p>
                         <p>${championInfo.blurb}</p>
                         <!-- 기타 정보들을 추가 -->
                     `;
-                } else {
-                    resultDiv.innerText = "해당하는 챔피언을 찾을 수 없습니다.";
-                }
+            } else {
+                resultDiv.innerText = "해당하는 챔피언을 찾을 수 없습니다.";
             }
-    
-            async function getChampionData() {
-                var response = await fetch('https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion.json');
-                var data = await response.json();
-                return data;
-            }
-    
-            // 페이지 로드 시 챔피언 정보 표시
-            window.onload = function() {
-                displayChampionInfo();
-            };
-        </script>
-    </body>
-    </html>
+        }
+
+        async function getChampionData() {
+            var response = await fetch('https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion.json');
+            var data = await response.json();
+            return data;
+        }
+
+        // 페이지 로드 시 챔피언 정보 표시
+        window.onload = function () {
+            displayChampionInfo();
+        };
+    </script>
+</body>
+
+</html>
