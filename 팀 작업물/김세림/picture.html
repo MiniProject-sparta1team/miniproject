@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion Images</title>
+    <style>
+        .champion-row {
+            display: flex;
+            flex-wrap: wrap; /* 자식 요소들을 여러 줄에 걸쳐 표시 */
+            justify-content: space-between; /* 여백을 최대로 유지하여 요소들을 배치 */
+            margin-bottom: 20px;
+        }
+        .champion-container {
+            flex: 0 1 calc(16.666% - 10px); /* 각 챔피언 컨테이너의 너비를 1/6로 설정 */
+            margin-bottom: 20px;
+            text-align: center; /* 내용을 가운데 정렬 */
+        }
+        .champion-img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+            cursor: pointer; /* 클릭 가능한 커서로 변경 */
+        }
+        .champion-name {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="champion-images"></div>
+
+    <script>
+        function displayChampionInfo() {
+            let url = 'https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion.json'
+            // JSON 파일 가져오기
+            fetch(url).then(res => res.json()).then(data => {
+                    const champions = Object.entries(data.data); // 챔피언 이름과 정보를 함께 저장
+
+                    const championImagesDiv = document.getElementById('champion-images');
+
+                    let championRow; // 챔피언을 나타내는 각 행의 컨테이너
+
+                    // 각 챔피언 이미지와 정보를 가져와서 화면에 표시
+                    champions.forEach(([championName, championData], index) => {
+                        // 매 6번째 챔피언마다 새로운 행 생성
+                        if (index % 6 === 0) {
+                            championRow = document.createElement('div');
+                            championRow.className = 'champion-row';
+                            championImagesDiv.appendChild(championRow);
+                        }
+
+                        const championContainer = document.createElement('div');
+                        championContainer.className = 'champion-container';
+
+                        // 이미지 엘리먼트 생성
+                        const img = document.createElement('img');
+                        img.src = `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${championName}.png`;
+                        img.alt = championName;
+                        img.className = 'champion-img';
+
+                        // 이름 엘리먼트 생성
+                        const name = document.createElement('div');
+                        name.className = 'champion-name';
+                        name.textContent = championData.name;
+
+                        // 클릭 시 상세 정보 페이지로 이동하는 이벤트 리스너 추가
+                        championContainer.addEventListener('click', () => {
+                            window.location.href = `detail.html?champion=${championName}`; 
+                            //상세페이지 이름 detail로 일단 작성해놓음 해당 html링크 변동시 변경해야함.
+                        });
+
+                        // 컨테이너에 이미지와 이름 추가
+                        championContainer.appendChild(img);
+                        championContainer.appendChild(name);
+
+                        championRow.appendChild(championContainer);
+                    });
+                })
+                .catch(error => console.error('데이터를 불러오는 중 오류가 발생했습니다:', error));
+        }
+        window.onload = function () {
+            displayChampionInfo();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion Detail</title>
+    <style>
+        .champion-detail {
+            text-align: center;
+        }
+        .champion-img {
+            width: 200px;
+            height: auto;
+        }
+        .champion-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .champion-title {
+            font-size: 20px;
+        }
+        .champion-description {
+            margin-top: 20px;
+            text-align: left; /* 왼쪽 정렬 추가 */
+        }
+    </style>
+</head>
+<body>
+    <div class="champion-detail">
+        <img class="champion-img" id="champion-img" src="" alt="Champion Image">
+        <div class="champion-name" id="champion-name"></div>
+        <div class="champion-title" id="champion-title"></div>
+        <div class="champion-description" id="champion-description"></div>
+    </div>
+
+    <script>
+        // URL에서 챔피언 이름 파라미터 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const championName = urlParams.get('champion');
+
+        // JSON 파일 가져오기
+        fetch('https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion.json')
+            .then(response => response.json())
+            .then(data => {
+                // 가져온 JSON 데이터에서 챔피언 정보 추출
+                const championData = data.data[championName];
+
+                if (championData) {
+                    // 이미지 엘리먼트에 이미지 URL 설정
+                    const championImg = document.getElementById('champion-img');
+                    championImg.src = `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${championName}.png`;
+
+                    // 이름 엘리먼트에 챔피언 이름 설정
+                    const championNameElement = document.getElementById('champion-name');
+                    championNameElement.textContent = championData.name;
+
+                    // 타이틀 엘리먼트에 챔피언 타이틀 설정
+                    const championTitleElement = document.getElementById('champion-title');
+                    championTitleElement.textContent = `${championData.title}`;
+
+                    // 소개 및 태그 엘리먼트에 챔피언 소개 및 태그 설정
+                    const championDescriptionElement = document.getElementById('champion-description');
+                    championDescriptionElement.innerHTML = `소개: ${championData.blurb}<br>역할군: ${championData.tags.join(', ')}`;
+                } else {
+                    console.error('챔피언 정보를 찾을 수 없습니다.');
+                }
+            })
+            .catch(error => console.error('데이터를 불러오는 중 오류가 발생했습니다:', error));
+    </script>
+</body>
+</html>
