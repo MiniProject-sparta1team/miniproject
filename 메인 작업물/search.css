@@ -1,0 +1,57 @@
+body,
+html {
+    width: 100%;
+}
+
+.search-result-container {
+    width: 100%;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.search-result-container #search-title {
+    font-size: 40px;
+    color: white;
+}
+
+.search-result-container #search-title>span {
+    font-weight: 700;
+    color: var(--color-lightblue);
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    gap: 50px;
+    margin: 50px auto;
+}
+
+.results .result {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 5px;
+    transition: all .5s ease-in-out;
+}
+
+.results .result:hover {
+    border: 1px solid var(--color-lightblue);
+}
+
+.results .result>img {
+    border-radius: 7px;
+}
+
+.results .result .info {
+    width: 80%;
+    text-align: left;
+    padding: 30px;
+    color: white;
+    opacity: 0.8;
+}
+
+.results .result .info #champion-name {
+    font-size: 35px;
+    font-weight: 500;
+}
