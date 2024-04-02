@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+
+:root {
+    /*color*/
+    --color-black: #1C1C1F;
+    --color-lightblue: #5383E8;
+    --color-deepblue: #27344E;
+    --color-orange: #FEB902;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--color-black);
+    font-family: 'Poppins', 'Orbit';
+}
+
+nav {
+    background-color: var(--color-deepblue);
+}
+
+#nav-title {
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.navbar-nav .nav-item>a {
+    color: var(--color-lightblue);
+    opacity: 0.5;
+    transition: all .5s ease-in-out;
+}
+
+.navbar-nav .nav-item>a:hover {
+    opacity: 1;
+}
+
+.navbar-nav .nav-item .active {
+    opacity: 1;
+    font-weight: 700;
+}
