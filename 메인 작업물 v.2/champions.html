@@ -71,19 +71,86 @@
 
     <div class="champions-container">
         <div class="positions">
-            <button><img src="image/all.png" alt="all"></button>
-            <button><img src="image/top.svg" alt="top"></button>
-            <button><img src="image/jungle.svg" alt="jungle"></button>
-            <button><img src="image/mid.svg" alt="mid"></button>
-            <button><img src="image/bottom.webp" alt="bottom"></button>
-            <button><img src="image/support.svg" alt="support"></button>
+            <button onclick="filterChampionsByPosition('all')"><img src="image/all.png" alt="all"></button>
+            <button onclick="filterChampionsByPosition('top')"><img src="image/top.svg" alt="top"></button>
+            <button onclick="filterChampionsByPosition('jungle')"><img src="image/jungle.svg" alt="jungle"></button>
+            <button onclick="filterChampionsByPosition('mid')"><img src="image/mid.svg" alt="mid"></button>
+            <button onclick="filterChampionsByPosition('bottom')"><img src="image/bottom.webp" alt="bottom"></button>
+            <button onclick="filterChampionsByPosition('support')"><img src="image/support.svg" alt="support"></button>
         </div>
         <div class="champions " id="champion-images">
 
         </div>
     </div>
     <script>
-        function displayChampionInfo() {
+        const top_champions = [
+            '렉사이', '다리우스', '레넥톤', '아트록스', '피오라', '말파이트', '올라프', '잭스', '자크', '럼블',
+            '뽀삐', '카시오페아', '볼리베어', '퀸', '세트', '제이스', '이렐리아', '갱플랭크', '문도 박사', '신지드',
+            '트위스티드 페이트', '클레드', '그라가스', '그웬', '트런들', '워윅', '요네', '트린다미어', '가렌', '쉔',
+            '케일', '렝가', '케넨', '우르곳', '베인', '탐 켄치', '요릭', '카밀', '나르', '우디르', '오공',
+            '사이온', '리븐', '모데카이저', '마오카이', '일라오이', '크산테', '티모', '오른', '아칼리', '판테온',
+            '사일러스', '하이머딩거', '나서스', '야스오', '초가스', '신 짜오', '블라디미르', '라이즈', '카르마',
+            '리 신', '바루스', '스몰더'
+        ];
+
+        const mid_champions = [
+            '아리', '아크샨', '탈리야', '카타리나', '애니비아', '제드', '사일러스', '니코', '아우렐리온 솔', '트위스티드 페이트',
+            '조이', '흐웨이', '애니', '판테온', '벡스', '레넥톤', '야스오', '탈론', '다이애나', '제이스',
+            '나피리', '자크', '트리스타나', '카시오페아', '카사딘', '이렐리아', '아칼리', '피즈', '베이가', '브랜드',
+            '요네', '에코', '럼블', '키아나', '그라가스', '스웨인', '럭스', '갈리오', '리산드라', '신드라',
+            '오리아나', '카르마', '아지르', '빅토르', '말파이트', '르블랑', '제라스', '말자하', '블라디미르', '아트록스',
+            '코르키', '라이즈'
+        ];
+
+        const jungle_champions = [
+            '리 신', '볼리베어', '렉사이', '카서스', '니달리', '탈리야', '샤코', '엘리스', '비에고', '브랜드',
+            '아이번', '킨드레드', '람머스', '벨베스', '피들스틱', '뽀삐', '워윅', '자크', '브라이어', '누누와 윌럼프',
+            '그라가스', '이블린', '신 짜오', '럼블', '카직스', '마스터 이', '에코', '바이', '잭스', '자이라',
+            '그레이브즈', '다이애나', '탈론', '녹턴', '릴리아', '헤카림', '자르반 4세', '우디르', '오공', '렝가',
+            '세주아니', '케인', '마오카이', '아무무', '제드', '쉬바나', '사일러스'
+        ]
+        const bottom_champions = [
+            '징크스', '제리', '루시안', '애쉬', '코그모', '드레이븐', '트위치', '닐라', '케이틀린', '스웨인',
+            '시비르', '직스', '카이사', '칼리스타', '사미라', '트리스타나', '진', '자야', '이즈리얼', '아펠리오스',
+            '야스오', '바루스', '미스 포츈', '베인', '트위스티드 페이트', '스몰더'
+        ]
+
+        const support_champions = [
+            '블리츠크랭크', '파이크', '쓰레쉬', '라칸', '레오나', '노틸러스', '렐', '브라움', '잔나', '알리스타',
+            '마오카이', '바드', '타릭', '카밀', '샤코', '자이라', '뽀삐', '룰루', '질리언', '유미', '세라핀',
+            '자크', '니코', '브랜드', '럭스', '제라스', '소라카', '피들스틱', '세나', '탐 켄치', '르블랑', '나미',
+            '모르가나', '흐웨이', '카르마', '벨코즈', '밀리오', '레나타 글라스크', '소나', '판테온', '애쉬', '스웨인',
+            '럼블', '하이머딩거', '사일러스', '아무무'
+        ];
+
+        function filterChampionsByPosition(position) {
+            let filteredChampions;
+            switch (position) {
+                case 'all':
+                    filteredChampions = support_champions.concat(top_champions, mid_champions, jungle_champions, bottom_champions);
+                    break;
+                case 'top':
+                    filteredChampions = top_champions;
+                    break;
+                case 'jungle':
+                    filteredChampions = jungle_champions;
+                    break;
+                case 'mid':
+                    filteredChampions = mid_champions;
+                    break;
+                case 'bottom':
+                    filteredChampions = bottom_champions;
+                    break;
+                case 'support':
+                    filteredChampions = support_champions;
+                    break;
+                default:
+                    filteredChampions = [];
+            }
+            displayChampionInfo(filteredChampions);
+        }
+        function displayChampionInfo(championlist) {
+
             let url = 'https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion.json';
             fetch(url)
                 .then(res => res.json())
@@ -94,46 +161,57 @@
                     });
 
                     const championImagesDiv = document.getElementById('champion-images');
+                    championImagesDiv.innerHTML = ''; // 기존 챔피언들 초기화
                     let championRow;
-
+                    let count = 0; // 필터링된 챔피언 수를 추적하기 위한 변수
                     sortedChampions.forEach(([championName, championData], index) => {
-                        if (index % 7 === 0) {
-                            championRow = document.createElement('div');
-                            championRow.className = 'champion-row';
-                            championImagesDiv.appendChild(championRow);
+                        if (championlist.includes(championData.name)) {
+                            if (count % 7 === 0) {
+                                championRow = document.createElement('div');
+                                championRow.className = 'champion-row';
+                                championImagesDiv.appendChild(championRow);
+                            }
+
+                            const championContainer = document.createElement('div');
+                            championContainer.className = 'champion-container';
+
+                            const img = document.createElement('img');
+                            img.src = `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${championName}.png`;
+                            img.alt = championName;
+                            img.className = 'champion-img';
+
+                            const name = document.createElement('div');
+
+                            name.className = 'champion-name';
+                            name.textContent = championData.name;
+
+                            championContainer.addEventListener('click', () => {
+                                window.location.href = `result.html?name=${championName}`;
+                            });
+
+                            championContainer.appendChild(img);
+                            championContainer.appendChild(name);
+
+                            championRow.appendChild(championContainer);
+
+                            if ((count + 1) % 7 === 0) {
+                                championContainer.style.marginRight = '0';
+                            }
+                            count++; // 필터링된 챔피언 수 증가
                         }
 
-                        const championContainer = document.createElement('div');
-                        championContainer.className = 'champion-container';
 
-                        const img = document.createElement('img');
-                        img.src = `http://ddragon.leagueoflegends.com/cdn/14.6.1/img/champion/${championName}.png`;
-                        img.alt = championName;
-                        img.className = 'champion-img';
 
-                        const name = document.createElement('div');
-                        name.className = 'champion-name';
-                        name.textContent = championData.name;
 
-                        championContainer.addEventListener('click', () => {
-                            window.location.href = `result.html?name=${championName}`;
-                        });
 
-                        championContainer.appendChild(img);
-                        championContainer.appendChild(name);
-
-                        championRow.appendChild(championContainer);
-
-                        if ((index + 1) % 7 === 0) {
-                            championContainer.style.marginRight = '0';
-                        }
                     });
                 })
                 .catch(error => console.error('데이터를 불러오는 중 오류가 발생했습니다:', error));
         }
         window.onload = function () {
-            displayChampionInfo();
+            filterChampionsByPosition('all'); // 페이지 로드 시 모든 챔피언 표시
         };
+
     </script>
 </body>
 

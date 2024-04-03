@@ -1,11 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>챔피언 목록</title>
 </head>
+
 <body>
-    
+
+    <h1>챔피언 목록</h1>
+    <div>
+        <button onclick="fetchChampionList('top')">Top</button>
+        <button onclick="fetchChampionList('support')">Support</button>
+        <button onclick="fetchChampionList('jungle')">Jungle</button>
+        <button onclick="fetchChampionList('mid')">Mid</button>
+        <button onclick="fetchChampionList('adc')">ADC</button>
+    </div>
+    <ul id="championList"></ul>
+
+    <script>
+        async function fetchChampionList(position) {
+            try {
+                const response = await fetch(`https://www.op.gg/champions?position=${position}`);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const championList = doc.querySelectorAll('.champion-index-table__champion > .champion-index-table__champion__name');
+
+                const championNames = [];
+                championList.forEach(champion => {
+                    championNames.push(champion.textContent.trim());
+                });
+
+                displayChampionList(championNames);
+            } catch (error) {
+                console.error('Error fetching champion list:', error);
+            }
+        }
+
+        function displayChampionList(championList) {
+            const championListElement = document.getElementById('championList');
+            championListElement.innerHTML = ''; // 이전 목록 지우기
+
+            championList.forEach(championName => {
+                const listItem = document.createElement('li');
+                listItem.textContent = championName;
+                championListElement.appendChild(listItem);
+            });
+        }
+    </script>
+
 </body>
+
 </html>
