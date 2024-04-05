@@ -58,8 +58,39 @@
                             <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/champion/${championInfo.image.full}" alt="${championInfo.name}" style="width: 200px;">
                             <div class="info">
                                 <p id="champion-name">${championInfo.name}</p>
-                                <p id="champion-position">역할군: ${championInfo.tags.join(', ')}</p>
-                                <p id="champion-description">${championInfo.blurb}</p>
+                                <p id="champion-description" class="description">${championInfo.blurb}</p>
+                                <div id="role-box">
+                                    <p class="champion-info-title">Role</p>
+                                    <p class="role description">${championInfo.tags.join(', ')}</p>
+                                </div>
+                                <div id="passive-box">
+                                    <p class="champion-info-title">Passive</p>
+                                    <div id="passive">
+                                        <img src="image/garen.jpg">
+                                        <p class="description">아트록스가 대검을 내리쳐 물리 피해를 줍니다. 세 번까지 휘두를 수 있으며 각 공격은 피해 범위가 다릅니다.</p>
+                                    </div>
+                                </div>
+                                <div id="skill-box">
+                                    <p class="champion-info-title">Skills</p>
+                                    <div id="skills">
+                                        <div class="skill">
+                                            <img src="image/garen.jpg">
+                                            <p class="description">skill description</p>
+                                        </div>
+                                        <div class="skill">
+                                            <img src="image/garen.jpg">
+                                            <p class="description">skill description</p>
+                                        </div>
+                                        <div class="skill">
+                                            <img src="image/garen.jpg">
+                                            <p class="description">skill description</p>
+                                        </div>
+                                        <div class="skill">
+                                            <img src="image/garen.jpg">
+                                            <p class="description">skill description</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     `;

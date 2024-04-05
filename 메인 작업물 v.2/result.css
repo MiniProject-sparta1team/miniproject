@@ -29,7 +29,9 @@ html {
 
 .results .result {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
     border: 1px solid rgba(100, 100, 100, 0.5);
     border-radius: 5px;
     transition: all .5s ease-in-out;
@@ -54,4 +56,46 @@ html {
 .results .result .info #champion-name {
     font-size: 35px;
     font-weight: 500;
+}
+
+.description {
+    opacity: 0.7;
+}
+
+.champion-info-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+}
+
+#role-box .role {
+    padding-left: 20px;
+}
+
+#passive {
+    display: flex;
+    gap: 20px;
+    padding-left: 20px;
+}
+
+#passive>img {
+    width: 50px;
+    height: 50px;
+}
+
+#skills {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#skills .skill {
+    display: flex;
+    gap: 20px;
+    padding-left: 20px;
+}
+
+#skills .skill>img {
+    width: 50px;
+    height: 50px;
 }
