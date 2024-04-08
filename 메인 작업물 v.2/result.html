@@ -43,27 +43,17 @@
 
     <script>
         async function displayChampionInfo() {
-            var params = new URLSearchParams(window.location.search);
-            var championName = params.get('name');
-            var championData = await getChampionData();
-            // 챔피언 정보에서 입력한 이름과 일치하는 챔피언 찾기
-            var championInfo = null;
-            if (/^[a-zA-Z]+$/.test(championName)) {
-                championName = championName.charAt(0).toUpperCase() + championName.slice(1).toLowerCase();
-                championInfo = championData.data[championName];
-            } else {
-                for (const champion of Object.values(championData.data)) {
-                    if (champion.name === championName) {
-                        console.log(champion);
-                        championInfo = champion;
-                        break;
-                    }
-                }
-            }
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var championName = params.get('name');
+                var championData = await getChampionData(championName);
 
-            var resultDiv = document.getElementById('result');
-            var resultDivH = document.getElementById('search-title');
-            if (championInfo) {
+                var championInfo = championData.data[championName];
+                console.log(championInfo)
+
+                var resultDiv = document.getElementById('result');
+                var resultDivH = document.getElementById('search-title');
+
                 // 챔피언 정보 표시
                 resultDiv.innerHTML = `
                         <a class="result">
@@ -78,46 +68,41 @@
                                 <div id="passive-box">
                                     <p class="champion-info-title">Passive</p>
                                     <div id="passive">
-                                        <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/passive/${championInfo.id}_Passive.png">
-                                        <p class="description">아트록스가 대검을 내리쳐 물리 피해를 줍니다. 세 번까지 휘두를 수 있으며 각 공격은 피해 범위가 다릅니다.</p>
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/passive/${championInfo.passive.image.full}">
+                                        <p class="description">${championInfo.passive.description}</p>
                                     </div>
                                 </div>
                                 <div id="skill-box">
                                     <p class="champion-info-title">Skills</p>
                                     <div id="skills">
-                                        <div class="skill">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/spell/${championInfo.id}Q.png">
-                                            <p class="description">skill description</p>
-                                        </div>
-                                        <div class="skill">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/spell/${championInfo.id}W.png">
-                                            <p class="description">skill description</p>
-                                        </div>
-                                        <div class="skill">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/spell/${championInfo.id}E.png">
-                                            <p class="description">skill description</p>
-                                        </div>
-                                        <div class="skill">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/spell/${championInfo.id}R.png">
-                                            <p class="description">skill description</p>
-                                        </div>
+                                        ${championInfo.spells.map(spell => `
+                                            <div class="skill">
+                                                <img src="https://ddragon.leagueoflegends.com/cdn/14.7.1/img/spell/${spell.id}.png">
+                                                <p class="description">${spell.description}</p>
+                                            </div>
+                                        `).join('')}
                                     </div>
                                 </div>
                             </div>
                         </a>
                     `;
-                    // 위 스킬과 passive의 img src는 챔프마다 뒤에 오는 링크가 달라서 다빈님이 보내주신 json에 있는 spell과 passive의 id와 fullname으로 가져오도록 수정해야함.
+                // 위 스킬과 passive의 img src는 챔프마다 뒤에 오는 링크가 달라서 다빈님이 보내주신 json에 있는 spell과 passive의 id와 fullname으로 가져오도록 수정해야함.
                 resultDivH.innerHTML = `
-                <span>${championInfo.name}</span>의 정보입니다.
-                `;
-            } else {
+                        <span>${championInfo.name}</span>의 정보입니다.
+                    `;
+
+            } catch (error) {
+                console.error('데이터를 가져오는 중 오류 발생:', error);
+                var resultDiv = document.getElementById('result');
                 resultDiv.innerText = "해당하는 챔피언을 찾을 수 없습니다.";
+                resultDiv.style.color = "white";
+                resultDiv.style.fontSize = "24px";
             }
         }
 
 
-        async function getChampionData() {
-            var response = await fetch('https://ddragon.leagueoflegends.com/cdn/14.7.1/data/ko_KR/champion.json');
+        async function getChampionData(championName) {
+            var response = await fetch(`https://ddragon.leagueoflegends.com/cdn/14.6.1/data/ko_KR/champion/${championName}.json`);
             var data = await response.json();
             return data;
         }
