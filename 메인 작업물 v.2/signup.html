@@ -4,22 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="signup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>LoginPage</title>
+    <title>Gamsamo.GG</title>
+    <!-- jQuery 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기 -4주차
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Firebase 구성 정보 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKmdTbBV0K-l_-3LndTWZkL_hpOSIwlcE",
+            authDomain: "sparta-f05b5.firebaseapp.com",
+            projectId: "sparta-f05b5",
+            storageBucket: "sparta-f05b5.appspot.com",
+            messagingSenderId: "331257208393",
+            appId: "1:331257208393:web:43df54fb580cb47a856998",
+            measurementId: "G-NV41ZM8R0S"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 회원가입 함수
+        async function signUp() {
+            const id = document.getElementById('signup-id').value;
+            const password = document.getElementById('signup-pw').value;
+            const rePassword = document.getElementById('signup-re-pw').value;
+
+            if (password !== rePassword) {
+                alert("비밀번호가 같지 않습니다.");
+                return;
+            }
+
+            // 중복된 아이디 체크
+            let isIdExist = false;
+            let docs = await getDocs(collection(db, "users")); //select
+            docs.forEach((doc) => {
+                let row = doc.data();
+                let existingId = row['id'];
+                if (existingId === id) {
+                    isIdExist = true;
+                    return; // 중복 아이디 발견 시 반복문 탈출
+                }
+            });
+
+            if (isIdExist) {
+                alert("아이디 중복");
+                document.getElementById('signup-id').focus(); // 입력 아이디 필드에 포커스 설정
+                return;
+            }
+
+            try {
+                // Firestore에 사용자 추가
+                const userDocRef = collection(db, "users");
+                await addDoc(userDocRef, {
+                    id: id,
+                    password: password
+                });
+                alert("회원가입 성공");
+                // 회원가입 성공 후 로그인 페이지로 이동
+                window.location.href = "login.html";
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("회원가입 실패");
+            }
+        }
+
+        // Sign Up 버튼에 이벤트 리스너 추가
+        document.getElementById('signUpbtn').addEventListener('click', signUp);
+    </script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-md bg-body-tertiary">
+        <div class="container-fluid">
+            <a id="nav-title" class="navbar-brand">Gamsamo.gg</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="champions.html">Champions</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="signup.html">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="signup-box">
         <h1>SIGN UP</h1>
         <form id="signup-form" action="">
             <input id="signup-id" type="text" placeholder="ID">
             <input id="signup-pw" type="password" placeholder="Password">
-            <input id="sigup-re-pw" type="password" placeholder="One more password">
-            <button onclick="window.open('login.html')">Sign Up</button>
+            <input id="signup-re-pw" type="password" placeholder="One more password">
+            <button id="signUpbtn" type="button">Sign Up</button>
         </form>
     </div>
 </body>
