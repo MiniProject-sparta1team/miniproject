@@ -41,8 +41,17 @@
             const password = document.getElementById('signup-pw').value;
             const rePassword = document.getElementById('signup-re-pw').value;
 
-            if (password !== rePassword) {
+            if (id == ""){
+                alert("아이디를 입력해주세요.");
+                document.getElementById('signup-id').focus();
+                return;
+            }else if (password == ""){
+                alert("비밀번호를 입력해주세요.");
+                document.getElementById('signup-pw').focus();
+                return;
+            }else if (password !== rePassword){
                 alert("비밀번호가 같지 않습니다.");
+                document.getElementById('signup-pw').focus();
                 return;
             }
 
