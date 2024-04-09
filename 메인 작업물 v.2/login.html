@@ -12,6 +12,71 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>LoginPage</title>
+
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기 -4주차
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Firebase 구성 정보 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKmdTbBV0K-l_-3LndTWZkL_hpOSIwlcE",
+            authDomain: "sparta-f05b5.firebaseapp.com",
+            projectId: "sparta-f05b5",
+            storageBucket: "sparta-f05b5.appspot.com",
+            messagingSenderId: "331257208393",
+            appId: "1:331257208393:web:43df54fb580cb47a856998",
+            measurementId: "G-NV41ZM8R0S"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 로그인 함수
+        async function login() {
+            const id = document.getElementById('login-id').value;
+            const password = document.getElementById('login-pw').value;
+
+            try {
+                // Firestore에서 해당 아이디의 사용자 정보 가져오기
+                const querySnapshot = await getDocs(collection(db, "users"));
+                let isUserFound = false;
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    if (userData.id === id && userData.password === password) {
+                        isUserFound = true;
+                        alert("로그인 성공");
+                        // 로그인 성공 후 메인 페이지로 이동
+                        window.location.href = "home.html";
+                        return; // 함수 종료
+                    }
+                });
+                // 사용자를 찾지 못한 경우
+                if (!isUserFound) {
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
+                }
+            } catch (error) {
+                console.error("Error getting document:", error);
+                alert("로그인 실패");
+            }
+        }
+
+        // Login 버튼에 이벤트 리스너 추가
+        document.getElementById('login-btn').addEventListener('click', function (event) {
+            event.preventDefault(); // 폼 제출 동작 방지
+            login();
+        });
+
+        // Enter 키 입력 시 로그인 함수 호출
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 폼 제출 동작 방지
+                login();
+            }
+        });
+    </script>
+
 </head>
 
 <body>
@@ -21,7 +86,7 @@
             <input id="login-id" type="text" placeholder="ID">
             <input id="login-pw" type="password" placeholder="Password">
             <div class="login-btn-box">
-                <button onclick="window.open('home.html')" id="login-btn">Log In</button>
+                <button id="login-btn" type="button">Log In</button>
                 <button onclick="window.open('signup.html')" id="signup-btn">Sign Up</button>
             </div>
         </form>
