@@ -24,13 +24,15 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="home.html">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="champions.html">Champions</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav" id = "user">
                 </ul>
             </div>
         </div>
@@ -125,7 +127,29 @@
         // 페이지 로드 시 챔피언 정보 표시
         window.onload = function () {
             displayChampionInfo();
+
+            // 세션에서 사용자 정보 가져오기
+            var username = sessionStorage.getItem('username');
+
+            // 사용자 정보가 있는 경우에만 화면에 표시
+            if (username) {
+                var userNav = document.getElementById('user');
+                userNav.innerHTML += '<li class="nav-item"><a class="nav-link" href="#">' + username + '님</a></li>';
+                userNav.innerHTML += '<li class="nav-item"><a class="nav-link" href="#" onclick="logout()">Logout</a></li>';
+            } else {
+                alert("로그인 후 사용이 가능합니다.");
+                // 로그인 정보가 없는 경우 로그인 페이지로 이동
+                window.location.href = 'login.html';
+            }
+
         };
+
+        function logout() {
+            // 세션에서 사용자 정보 제거
+            sessionStorage.removeItem('username');
+            // 로그인 페이지로 이동
+            window.location.href = 'login.html';
+        }
     </script>
 </body>
 
