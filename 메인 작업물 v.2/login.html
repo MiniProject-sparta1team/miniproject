@@ -76,12 +76,13 @@
             }
         });
 
-// Sign Up 버튼 클릭 시 signup.html로 이동하는 함수
-function goToSignUp() {
-    window.location.href = "signup.html";
-}
-// Sign Up 버튼에 이벤트 리스너 추가
-document.getElementById('signup-btn').addEventListener('click', goToSignUp);
+        // Sign Up 버튼 클릭 시 signup.html로 이동하는 함수
+        function goToSignUp() {
+            window.location.href = "signup.html";
+        }
+
+        // Sign Up 버튼에 이벤트 리스너 추가
+        document.getElementById('signup-btn').addEventListener('click', goToSignUp);
     </script>
 
 </head>
@@ -115,8 +116,7 @@ document.getElementById('signup-btn').addEventListener('click', goToSignUp);
             <input id="login-pw" type="password" placeholder="Password">
             <div class="login-btn-box">
                 <button id="login-btn" type="button">Log In</button>
-                 <!-- Signup 버튼을 버튼 모양으로 변경 -->
-                 <button id="signup-btn" class="signup-btn" type="button">Sign Up</button>
+                <button id="signup-btn" class="signup-btn" type="button">Sign Up</button>
             </div>
         </form>
     </div>
